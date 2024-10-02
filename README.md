@@ -1,6 +1,6 @@
 # StockEasy
 
-## Descripción
+## Descripción de nuestro proyecto
 
 **StockEasy** es una aplicación web diseñada para gestionar inventarios de manera fácil y eficiente. Permite a los usuarios realizar un seguimiento en tiempo real del stock de productos, gestionar categorías, proveedores, y realizar análisis detallados del inventario. Desarrollado como parte de un proyecto universitario, StockEasy busca automatizar las tareas relacionadas con el inventario utilizando tecnologías modernas como React, Next.js, Supabase, TailwindCSS y NextAuth.
 
@@ -53,7 +53,7 @@
 Primero, el equipo se reunió para discutir los requisitos y funcionalidades clave del software. Identificamos las necesidades de los usuarios y creamos un esquema de las funciones más importantes, como la gestión de productos, categorías, y alertas de inventario bajo. También decidimos utilizar una arquitectura basada en el stack **React + Next.js + Supabase** para garantizar una escalabilidad óptima.
 
 ### 2. Diseño de la interfaz
-Usamos **Figma** para diseñar prototipos de alta fidelidad de las pantallas clave de la aplicación. Esto incluyó la creación de un dashboard para la gestión de productos, así como formularios para la entrada y edición de datos.
+Usamos **Excalidraw** para diseñar prototipos de alta fidelidad de las pantallas clave de la aplicación. Esto incluyó la creación de un dashboard para la gestión de productos, así como formularios para la entrada y edición de datos.
 
 ### 3. División del trabajo
 - **Frontend (React y TailwindCSS)**: Dos miembros trabajaron en los componentes de la interfaz de usuario, asegurando que la aplicación fuera responsiva y atractiva visualmente.
@@ -76,10 +76,10 @@ Finalmente, desplegamos la aplicación en **Vercel**, que facilitó el despliegu
 
 Este proyecto está siendo desarrollado por:
 
-- **Nombre 1** - Frontend Developer
-- **Nombre 2** - Backend Developer
-- **Nombre 3** - Full-Stack Developer
-- **Tu nombre** - Project Manager
+- **Romer Alexander Almeida** - Frontend Developer
+- **Juan Esteban Santander Acero** - Backend Developer
+- **Yesi Esteban Pantoja Cuellar** - Full-Stack Developer
+- **Javier Nicolas Salas Liñeiro** - Project Manager
 
 ## Licencia
 
