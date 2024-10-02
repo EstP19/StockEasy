@@ -2,7 +2,7 @@
 
 ## Descripción de nuestro proyecto
 
-**StockEasy** es una aplicación web diseñada para gestionar inventarios de manera fácil y eficiente. Permite a los usuarios realizar un seguimiento en tiempo real del stock de productos, gestionar categorías, proveedores, y realizar análisis detallados del inventario. Desarrollado como parte de un proyecto universitario, StockEasy busca automatizar las tareas relacionadas con el inventario utilizando tecnologías modernas como React, Next.js, Supabase, TailwindCSS y NextAuth.
+**StockEasy** es una aplicación web diseñada para gestionar inventarios de manera fácil y eficiente. Permite a los usuarios realizar un seguimiento en tiempo real del stock de productos, gestionar categorías, proveedores, y realizar análisis detallados del inventario. Desarrollado como parte de un proyecto universitario, StockEasy busca automatizar las tareas relacionadas con el inventario utilizando tecnologías modernas como **React**, **Next.js**, **Supabase**, **TailwindCSS** y **NextAuth**.
 
 ## Tabla de Contenidos
 
@@ -32,7 +32,6 @@
 - **TailwindCSS**: Framework CSS para un diseño eficiente y estilización moderna.
 - **NextAuth**: Solución completa de autenticación para Next.js.
 - **Vercel**: Para el despliegue y hosting del proyecto.
-
 
 ## Uso
 
@@ -84,4 +83,3 @@ Este proyecto está siendo desarrollado por:
 ## Licencia
 
 Este proyecto está bajo la licencia MIT - consulta el archivo [LICENSE](./LICENSE) para más detalles.
-
