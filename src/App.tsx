@@ -13,10 +13,10 @@ function App() {
     { id: '2', name: 'Producto 2', quantity: 5, price: 19.99, description: 'Descripción del producto 2' },
   ]);
 
-  const handleLogin = (email: string, password: string) => {
+  const handleLogin = () => {
     // Aquí se implementaría la lógica de autenticación real
-    console.log('Login attempt:', email, password);
-    setIsLoggedIn(true);
+    console.log('Login successful');
+    setIsLoggedIn(true); // Cambiado para que se llame cuando el login es exitoso
   };
 
   const handleAddProduct = (product: Omit<Product, 'id'>) => {
@@ -43,7 +43,7 @@ function App() {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <LoginForm onLogin={handleLogin} />
+        <LoginForm onLoginSuccess={handleLogin} /> {/* Asegúrate de que el nombre coincide aquí */}
       </div>
     );
   }

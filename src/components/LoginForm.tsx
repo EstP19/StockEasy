@@ -1,18 +1,38 @@
+
 import React, { useState } from 'react';
 import { User } from 'lucide-react';
+import { supabase } from '../supabaseConfig.ts'; // Importa el cliente de Supabase
 
 interface LoginFormProps {
-  onLogin: (email: string, password: string) => void;
+  onLoginSuccess: () => void; // Cambiamos el prop para indicar éxito en login
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Para mostrar errores
+  const [loading, setLoading] = useState(false); // Indicador de carga
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(email, password);
+    setLoading(true);
+    setError(null); // Resetear error antes de intentar login
+
+    // Lógica de autenticación con Supabase
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError('Error al iniciar sesión. Verifica tus credenciales.');
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+    onLoginSuccess(); // Notificamos al componente padre que el login fue exitoso
   };
 
   return (
@@ -54,8 +74,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             </button>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary w-full">
-          Login
+
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+          {loading ? 'Cargando...' : 'Login'}
         </button>
       </form>
       <div className="mt-4 text-center">
@@ -66,4 +89,4 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   );
 };
 
-export default LoginForm;
+export default LoginForm; 
