@@ -1,171 +1,133 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseConfig'; // Asegúrate de que esto esté correctamente configurado
 import { Product } from '../types';
-import { Plus, Search, ArrowLeft } from 'lucide-react';
 
-interface InventoryProps {
-  products: Product[];
-  onAddProduct: (product: Omit<Product, 'id'>) => void;
-  onEditProduct: (product: Product) => void;
-  onDeleteProduct: (id: string) => void;
-  onNavigate: (page: string) => void;
-}
-
-const Inventory: React.FC<InventoryProps> = ({
-  products,
-  onAddProduct,
-  onEditProduct,
-  onDeleteProduct,
-  onNavigate,
-}) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
     name: '',
     quantity: 0,
     price: 0,
-    description: '',
+    description: ''
   });
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editProductId, setEditProductId] = useState<string | null>(null);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  const handleAddProduct = () => {
-    onAddProduct(newProduct);
-    setNewProduct({ name: '', quantity: 0, price: 0, description: '' });
-  };
+  const fetchProducts = async () => {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*');
 
-  const handleEditProduct = () => {
-    if (editingProduct) {
-      onEditProduct(editingProduct);
-      setEditingProduct(null);
+    if (error) {
+      console.error('Error fetching products:', error);
+    } else {
+      setProducts(data as Product[]);
     }
   };
 
+  const addProduct = async () => {
+    const { data, error } = await supabase
+      .from('products')
+      .insert([{ ...newProduct }]);
+
+    if (error) {
+      console.error('Error adding product:', error);
+    } else {
+      if (data) {
+        setProducts([...products, ...data]);
+      }
+      resetForm();
+    }
+  };
+
+  const editProduct = async () => {
+    if (editProductId) {
+      const { error } = await supabase
+        .from('products')
+        .update(newProduct)
+        .match({ id: editProductId });
+
+      if (error) {
+        console.error('Error updating product:', error);
+      } else {
+        fetchProducts(); // Refresca la lista de productos
+        resetForm();
+      }
+    }
+  };
+
+  const deleteProduct = async (id: string) => {
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .match({ id });
+
+    if (error) {
+      console.error('Error deleting product:', error);
+    } else {
+      fetchProducts(); // Refresca la lista de productos
+    }
+  };
+
+  const handleEditClick = (product: Product) => {
+    setNewProduct(product);
+    setEditProductId(product.id); // Guardar el ID del producto que se va a editar
+  };
+
+  const resetForm = () => {
+    setNewProduct({ name: '', quantity: 0, price: 0, description: '' });
+    setEditProductId(null); // Reiniciar el ID del producto en edición
+  };
+
   return (
-    <div className="p-8">
-      <div className="flex items-center mb-6">
-        <button className="btn btn-secondary mr-4" onClick={() => onNavigate('dashboard')}>
-          <ArrowLeft className="mr-2" /> Volver
-        </button>
-        <h2 className="text-2xl font-bold">Inventario</h2>
-      </div>
-      <div className="mb-6 flex items-center">
-        <Search className="text-gray-400 mr-2" />
+    <div>
+      <h2>Inventario</h2>
+      <button onClick={() => onNavigate('dashboard')}>Volver</button>
+      <div>
+        <h3>{editProductId ? 'Editar Producto' : 'Añadir Producto'}</h3>
         <input
           type="text"
-          placeholder="Buscar producto"
-          className="input flex-grow"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Nombre"
+          value={newProduct.name}
+          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
         />
+        <input
+          type="number"
+          placeholder="Cantidad"
+          value={newProduct.quantity}
+          onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
+        />
+        <input
+          type="number"
+          placeholder="Precio"
+          value={newProduct.price}
+          onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
+        />
+        <input
+          type="text"
+          placeholder="Descripción"
+          value={newProduct.description}
+          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+        />
+        <button onClick={editProductId ? editProduct : addProduct}>
+          {editProductId ? 'Actualizar Producto' : 'Añadir Producto'}
+        </button>
       </div>
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="bg-gray-800 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-            <p>Cantidad: {product.quantity}</p>
-            <p>Precio: ${product.price.toFixed(2)}</p>
-            <p className="mb-4">{product.description}</p>
-            <div className="flex justify-between">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setEditingProduct(product)}
-              >
-                Editar
-              </button>
-              <button
-                className="btn bg-red-600 hover:bg-red-700 text-white"
-                onClick={() => onDeleteProduct(product.id)}
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
+      <h3>Lista de Productos</h3>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - {product.quantity} - ${product.price}
+            <button onClick={() => handleEditClick(product)}>Editar</button>
+            <button onClick={() => deleteProduct(product.id)}>Eliminar</button>
+          </li>
         ))}
-      </div>
-      {editingProduct ? (
-        <div className="bg-gray-800 p-4 rounded-lg mb-6">
-          <h3 className="text-lg font-semibold mb-4">Editar Producto</h3>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <input
-              type="text"
-              placeholder="Nombre"
-              className="input"
-              value={editingProduct.name}
-              onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-            />
-            <input
-              type="number"
-              placeholder="Cantidad"
-              className="input"
-              value={editingProduct.quantity}
-              onChange={(e) => setEditingProduct({ ...editingProduct, quantity: Number(e.target.value) })}
-            />
-            <input
-              type="number"
-              placeholder="Precio"
-              className="input"
-              value={editingProduct.price}
-              onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-            />
-            <input
-              type="text"
-              placeholder="Descripción"
-              className="input"
-              value={editingProduct.description}
-              onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-            />
-          </div>
-          <div className="flex justify-end">
-            <button className="btn btn-secondary mr-2" onClick={() => setEditingProduct(null)}>
-              Cancelar
-            </button>
-            <button className="btn btn-primary" onClick={handleEditProduct}>
-              Guardar Cambios
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="bg-gray-800 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4">Agregar Producto</h3>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <input
-              type="text"
-              placeholder="Nombre"
-              className="input"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-            />
-            <input
-              type="number"
-              placeholder="Cantidad"
-              className="input"
-              value={newProduct.quantity}
-              onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
-            />
-            <input
-              type="number"
-              placeholder="Precio"
-              className="input"
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-            />
-            <input
-              type="text"
-              placeholder="Descripción"
-              className="input"
-              value={newProduct.description}
-              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-            />
-          </div>
-          <button className="btn btn-primary w-full" onClick={handleAddProduct}>
-            <Plus className="inline-block mr-2" /> Agregar Producto
-          </button>
-        </div>
-      )}
+      </ul>
     </div>
   );
 };
 
-export default Inventory; 
+export default Inventory;
