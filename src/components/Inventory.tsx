@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../supabaseConfig'; // Asegúrate de que esto esté correctamente configurado
+import { supabase } from '../supabaseConfig'; // Asegúrate de que esté configurado
 import { Product } from '../types';
+import { ArrowLeft, Plus, Search } from 'lucide-react'; // Íconos opcionales
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -8,19 +11,18 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
     name: '',
     quantity: 0,
     price: 0,
-    description: ''
+    description: '',
   });
   const [editProductId, setEditProductId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activityLog, setActivityLog] = useState<string[]>([]); // Estado para el historial de actividades
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*');
-
+    const { data, error } = await supabase.from('products').select('*');
     if (error) {
       console.error('Error fetching products:', error);
     } else {
@@ -28,18 +30,22 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
     }
   };
 
-  const addProduct = async () => {
-    const { data, error } = await supabase
-      .from('products')
-      .insert([{ ...newProduct }]);
+  const logActivity = (activity: string) => {
+    setActivityLog((prevLog) => [...prevLog, activity]); // Registrar actividad en el historial
+  };
 
+  const addProduct = async () => {
+    const { data, error } = await supabase.from('products').insert([newProduct]);
     if (error) {
       console.error('Error adding product:', error);
+      toast.error('Error al agregar producto');
     } else {
       if (data) {
         setProducts([...products, ...data]);
+        logActivity(`Producto agregado: ${newProduct.name}`); // Registro de actividad
+        resetForm();
+        toast.success('Producto agregado con éxito');
       }
-      resetForm();
     }
   };
 
@@ -52,80 +58,151 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
 
       if (error) {
         console.error('Error updating product:', error);
+        toast.error('Error al actualizar producto');
       } else {
-        fetchProducts(); // Refresca la lista de productos
+        fetchProducts();
+        logActivity(`Producto editado: ${newProduct.name}`); // Registro de actividad
         resetForm();
+        toast.success('Producto actualizado con éxito');
       }
     }
   };
 
   const deleteProduct = async (id: string) => {
-    const { error } = await supabase
-      .from('products')
-      .delete()
-      .match({ id });
-
-    if (error) {
-      console.error('Error deleting product:', error);
-    } else {
-      fetchProducts(); // Refresca la lista de productos
+    const confirmed = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
+    if (confirmed) {
+      const { error } = await supabase.from('products').delete().match({ id });
+      if (error) {
+        console.error('Error deleting product:', error);
+        toast.error('Error al eliminar producto');
+      } else {
+        fetchProducts(); // Refresca la lista después de eliminar
+        logActivity(`Producto eliminado: ${id}`); // Registro de actividad
+        toast.success('Producto eliminado con éxito');
+      }
     }
   };
 
   const handleEditClick = (product: Product) => {
     setNewProduct(product);
-    setEditProductId(product.id); // Guardar el ID del producto que se va a editar
+    setEditProductId(product.id);
   };
 
   const resetForm = () => {
     setNewProduct({ name: '', quantity: 0, price: 0, description: '' });
-    setEditProductId(null); // Reiniciar el ID del producto en edición
+    setEditProductId(null);
   };
 
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      <h2>Inventario</h2>
-      <button onClick={() => onNavigate('dashboard')}>Volver</button>
-      <div>
-        <h3>{editProductId ? 'Editar Producto' : 'Añadir Producto'}</h3>
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={newProduct.name}
-          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Cantidad"
-          value={newProduct.quantity}
-          onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
-        />
-        <input
-          type="number"
-          placeholder="Precio"
-          value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-        />
-        <input
-          type="text"
-          placeholder="Descripción"
-          value={newProduct.description}
-          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-        />
-        <button onClick={editProductId ? editProduct : addProduct}>
-          {editProductId ? 'Actualizar Producto' : 'Añadir Producto'}
+    <div className="p-8">
+      <div className="flex items-center mb-6">
+        <button className="btn btn-secondary mr-4" onClick={() => onNavigate('dashboard')}>
+          <ArrowLeft className="mr-2" /> Volver
         </button>
+        <h2 className="text-2xl font-bold">Inventario</h2>
       </div>
-      <h3>Lista de Productos</h3>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - {product.quantity} - ${product.price}
-            <button onClick={() => handleEditClick(product)}>Editar</button>
-            <button onClick={() => deleteProduct(product.id)}>Eliminar</button>
-          </li>
+
+      <div className="mb-6 flex items-center">
+        <Search className="text-gray-400 mr-2" />
+        <input
+          type="text"
+          placeholder="Buscar producto"
+          className="input flex-grow"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        {filteredProducts.map((product) => (
+          <div key={product.id} className="bg-gray-800 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+            <p>Cantidad: {product.quantity}</p>
+            <p>Precio: ${product.price.toFixed(2)}</p>
+            <p className="mb-4">{product.description}</p>
+            <div className="flex justify-between">
+              <button className="btn btn-secondary" onClick={() => handleEditClick(product)}>
+                Editar
+              </button>
+              <button
+                className="btn bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => deleteProduct(product.id)}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
+
+      <div className="bg-gray-800 p-4 rounded-lg mb-6">
+        <h3 className="text-lg font-semibold mb-4">
+          {editProductId ? 'Editar Producto' : 'Agregar Producto'}
+        </h3>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Nombre"
+            className="input"
+            value={newProduct.name}
+            onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Cantidad"
+            className="input"
+            value={newProduct.quantity}
+            onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
+          />
+          <input
+            type="number"
+            placeholder="Precio"
+            className="input"
+            value={newProduct.price}
+            onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
+          />
+          <input
+            type="text"
+            placeholder="Descripción"
+            className="input"
+            value={newProduct.description}
+            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+          />
+        </div>
+        <div className="flex justify-end">
+          {editProductId ? (
+            <>
+              <button className="btn btn-secondary mr-2" onClick={resetForm}>
+                Cancelar
+              </button>
+              <button className="btn btn-primary" onClick={editProduct}>
+                Guardar Cambios
+              </button>
+            </>
+          ) : (
+            <button className="btn btn-primary w-full" onClick={addProduct}>
+              <Plus className="inline-block mr-2" /> Agregar Producto
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Mostrar Historial de Actividades */}
+      <div className="bg-gray-800 p-4 rounded-lg mb-6">
+        <h3 className="text-lg font-semibold mb-4">Historial de Actividades</h3>
+        <ul>
+          {activityLog.map((activity, index) => (
+            <li key={index} className="text-gray-400">{activity}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Agregar ToastContainer aquí */}
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 };

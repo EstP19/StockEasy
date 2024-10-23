@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
 import Inventory from './components/Inventory';
 import Sales from './components/Sales';
-import { Product } from './types';
+import { supabase } from './supabaseConfig.ts'; // Asegúrate de que la ruta sea correcta
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('dashboard');
+
+  useEffect(() => {
+    // Verificar si el usuario ya está logueado
+    const checkUserSession = async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (user) {
+        setIsLoggedIn(true); // Si hay un usuario, se considera que está logueado
+      }
+    };
+
+    checkUserSession();
+  }, []); // Solo se ejecuta una vez al montar el componente
 
   const handleLogin = () => {
     console.log('Login successful');
