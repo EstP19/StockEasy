@@ -11,3 +11,4 @@ if (!supabaseUrl || !supabaseKey) {
 
 // Crea el cliente de Supabase
 export const supabase = createClient(supabaseUrl, supabaseKey);
+
