@@ -81,7 +81,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-center">StockEasy</h1>
+        <h1 className="text-3xl font-bold text-center">Stock<span className='text-[#00a1e7]'>Easy</span></h1>
         <button className="btn btn-danger flex items-center" onClick={handleLogout}>
           <LogOut className="mr-2" /> Logout
         </button>
@@ -106,40 +106,52 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         </button>
       </div>
 
-      {/* Sección del Reporte/Análisis */}
-      <div className="mt-8 p-4 bg-gray-800 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Reporte</h2>
-        {loading ? (
-          <p>Cargando datos...</p>
-        ) : (
-          <div>
-            <p className="mb-2">
-              Total de Productos en Inventario: 
-              <span className="font-bold"> {totalInventoryProducts}</span>
-            </p>
-            <p>
-              Total de Productos en Ventas: 
-              <span className="font-bold"> {totalSalesProducts}</span>
-            </p>
-            <p>
-              Producto con Mayor Cantidad en Inventario: 
-              <span className="font-bold"> {mostQuantityInventoryProduct}</span>
-            </p>
-            <p>
-              Producto con Menor Cantidad en Inventario: 
-              <span className="font-bold"> {leastQuantityInventoryProduct}</span>
-            </p>
-            <p>
-              Producto con Mayor Cantidad en Ventas: 
-              <span className="font-bold"> {mostQuantitySalesProduct}</span>
-            </p>
-            <p>
-              Producto con Menor Cantidad en Ventas: 
-              <span className="font-bold"> {leastQuantitySalesProduct}</span>
-            </p>
-          </div>
-        )}
+{/* Sección del Reporte/Análisis */}
+<div className="mt-8 p-4 bg-gray-800 rounded-lg">
+  <h2 className="text-xl font-semibold mb-4">Reporte</h2>
+  {loading ? (
+    <p>Cargando datos...</p>
+  ) : (
+    <div className="grid grid-cols-1 gap-4">
+      <div className="p-4 bg-black rounded-lg shadow">
+        <p className="mb-2">
+          Total de Productos en Inventario: 
+          <span className="font-bold"> {totalInventoryProducts}</span>
+        </p>
       </div>
+      <div className="p-4 bg-black rounded-lg shadow">
+        <p>
+          Total de Productos en Ventas: 
+          <span className="font-bold"> {totalSalesProducts}</span>
+        </p>
+      </div>
+      <div className="p-4 bg-black rounded-lg shadow">
+        <p>
+          Producto con Mayor Cantidad en Inventario: 
+          <span className="font-bold"> {mostQuantityInventoryProduct}</span>
+        </p>
+      </div>
+      <div className="p-4 bg-black rounded-lg shadow">
+        <p>
+          Producto con Menor Cantidad en Inventario: 
+          <span className="font-bold"> {leastQuantityInventoryProduct}</span>
+        </p>
+      </div>
+      <div className="p-4 bg-black rounded-lg shadow">
+        <p>
+          Producto con Mayor Cantidad en Ventas: 
+          <span className="font-bold"> {mostQuantitySalesProduct}</span>
+        </p>
+      </div>
+      <div className="p-4 bg-black rounded-lg shadow">
+        <p>
+          Producto con Menor Cantidad en Ventas: 
+          <span className="font-bold"> {leastQuantitySalesProduct}</span>
+        </p>
+      </div>
+    </div>
+  )}
+</div>
 
       
     </div>
