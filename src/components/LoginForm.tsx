@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { User } from 'lucide-react';
+import { LaughIcon } from 'lucide-react';
 import { supabase } from '../supabaseConfig.ts'; // Importa el cliente de Supabase
 
 interface LoginFormProps {
@@ -36,8 +36,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
+    <div>
     <div className="bg-gray-800 p-8 rounded-lg shadow-md w-96">
-      <h2 className="text-2xl font-bold mb-6 text-center text-white">StockEasy</h2>
+      <h2 className="text-5xl font-bold mb-6 text-center text-white">Stock<span className='text-[#00a1e7]'>Easy</span></h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
@@ -82,9 +83,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         </button>
       </form>
       <div className="mt-4 text-center">
-        <User className="inline-block text-accent mr-2" />
-        <span className="text-gray-400">StockEasy todos los derechos reservados</span>
+        <LaughIcon className="inline-block text-accent mr-2" />
+        <span className="text-gray-300 text-sm">¡Nos satisface tenerte con nosotros!</span>
       </div>
+     
+    </div>
+    <div>
+    <footer>
+      <div className="text-center  mt-4 text-gray-400 text-sm">
+        
+        <p>&copy;  StockEasy 2024</p>
+        <p>Todos los derechos reservados</p>
+      </div>
+    </footer>
+    </div>
     </div>
   );
 };

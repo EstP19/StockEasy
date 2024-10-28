@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { Package, ShoppingCart, LogOut } from 'lucide-react';
 import { supabase } from '../supabaseConfig'; // Importamos Supabase para el logout
