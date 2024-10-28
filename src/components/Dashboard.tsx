@@ -81,7 +81,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-center">Stock<span className='text-[#00a1e7]'>Easy</span></h1>
+        <h1 className="text-5xl font-bold text-center">Stock<span className='text-[#00a1e7]'>Easy</span></h1>
         <button className="btn btn-danger flex items-center" onClick={handleLogout}>
           <LogOut className="mr-2" /> Logout
         </button>
