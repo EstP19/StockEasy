@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';

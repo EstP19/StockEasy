@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { Package, ShoppingCart, LogOut } from 'lucide-react';
 import { supabase } from '../supabaseConfig'; // Importamos Supabase para el logout
-import ReactTooltip from 'react-tooltip'; // Asegúrate de que esta línea sea correcta
-
 interface DashboardProps {
   onNavigate: (page: string) => void;
 }
