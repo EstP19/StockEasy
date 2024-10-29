@@ -101,7 +101,7 @@ const Sales: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate })
     <div className="p-8">
       <div className="flex items-center mb-6">
         <button className="btn btn-secondary mr-4" onClick={() => onNavigate('dashboard')}>
-          <ArrowLeft className="mr-2" /> Volver
+          <ArrowLeft className="mr-2" />
         </button>
         <h2 className="text-2xl font-bold">Ventas</h2>
       </div>
