@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from '../supabaseConfig'; // Asegúrate de que esté configurado
-import { Product } from '../types';
-import { ArrowLeft, Plus, Search } from 'lucide-react'; // Íconos opcionales
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useEffect, useState } from "react";
+import { supabase } from "../supabaseConfig"; // Asegúrate de que esté configurado
+import { Product } from "../types";
+import { ArrowLeft, Plus, Search } from "lucide-react"; // Íconos opcionales
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
+const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({
+  onNavigate,
+}) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
-    name: '',
+  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
+    name: "",
     quantity: 0,
     price: 0,
-    description: '',
+    description: "",
   });
   const [editProductId, setEditProductId] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [activityLog, setActivityLog] = useState<string[]>([]); // Estado para el historial de actividades
 
   useEffect(() => {
@@ -22,9 +24,9 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
   }, []);
 
   const fetchProducts = async () => {
-    const { data, error } = await supabase.from('products').select('*');
+    const { data, error } = await supabase.from("products").select("*");
     if (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } else {
       setProducts(data as Product[]);
     }
@@ -35,16 +37,18 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
   };
 
   const addProduct = async () => {
-    const { data, error } = await supabase.from('products').insert([newProduct]);
+    const { data, error } = await supabase
+      .from("products")
+      .insert([newProduct]);
     if (error) {
-      console.error('Error adding product:', error);
-      toast.error('Error al agregar producto');
+      console.error("Error adding product:", error);
+      toast.error("Error al agregar producto");
     } else {
       if (data) {
         setProducts([...products, ...data]);
         logActivity(`Producto agregado: ${newProduct.name}`); // Registro de actividad
         resetForm();
-        toast.success('Producto agregado con éxito');
+        toast.success("Producto agregado con éxito");
       }
     }
   };
@@ -52,33 +56,35 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
   const editProduct = async () => {
     if (editProductId) {
       const { error } = await supabase
-        .from('products')
+        .from("products")
         .update(newProduct)
         .match({ id: editProductId });
 
       if (error) {
-        console.error('Error updating product:', error);
-        toast.error('Error al actualizar producto');
+        console.error("Error updating product:", error);
+        toast.error("Error al actualizar producto");
       } else {
         fetchProducts();
         logActivity(`Producto editado: ${newProduct.name}`); // Registro de actividad
         resetForm();
-        toast.success('Producto actualizado con éxito');
+        toast.success("Producto actualizado con éxito");
       }
     }
   };
 
   const deleteProduct = async (id: string) => {
-    const confirmed = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
+    const confirmed = window.confirm(
+      "¿Estás seguro de que deseas eliminar este producto?"
+    );
     if (confirmed) {
-      const { error } = await supabase.from('products').delete().match({ id });
+      const { error } = await supabase.from("products").delete().match({ id });
       if (error) {
-        console.error('Error deleting product:', error);
-        toast.error('Error al eliminar producto');
+        console.error("Error deleting product:", error);
+        toast.error("Error al eliminar producto");
       } else {
         fetchProducts(); // Refresca la lista después de eliminar
         logActivity(`Producto eliminado: ${id}`); // Registro de actividad
-        toast.success('Producto eliminado con éxito');
+        toast.success("Producto eliminado con éxito");
       }
     }
   };
@@ -89,7 +95,7 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
   };
 
   const resetForm = () => {
-    setNewProduct({ name: '', quantity: 0, price: 0, description: '' });
+    setNewProduct({ name: "", quantity: 0, price: 0, description: "" });
     setEditProductId(null);
   };
 
@@ -100,7 +106,10 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
   return (
     <div className="p-8">
       <div className="flex items-center mb-6">
-        <button className="btn btn-secondary mr-4" onClick={() => onNavigate('dashboard')}>
+        <button
+          className="btn btn-secondary mr-4"
+          onClick={() => onNavigate("dashboard")}
+        >
           <ArrowLeft className="mr-2" />
         </button>
         <h2 className="text-2xl font-bold">Inventario</h2>
@@ -125,7 +134,10 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
             <p>Precio: ${product.price.toFixed(2)}</p>
             <p className="mb-4">{product.description}</p>
             <div className="flex justify-between">
-              <button className="btn btn-secondary" onClick={() => handleEditClick(product)}>
+              <button
+                className="btn btn-secondary"
+                onClick={() => handleEditClick(product)}
+              >
                 Editar
               </button>
               <button
@@ -141,38 +153,74 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
 
       <div className="bg-gray-800 p-4 rounded-lg mb-6">
         <h3 className="text-lg font-semibold mb-4">
-          {editProductId ? 'Editar Producto' : 'Agregar Producto'}
+          {editProductId ? "Editar Producto" : "Agregar Producto"}
         </h3>
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <input
-            type="text"
-            placeholder="Nombre"
-            className="input"
-            value={newProduct.name}
-            onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Cantidad"
-            className="input"
-            value={newProduct.quantity}
-            onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
-          />
-          <input
-            type="number"
-            placeholder="Precio"
-            className="input"
-            value={newProduct.price}
-            onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-          />
-          <input
-            type="text"
-            placeholder="Descripción"
-            className="input"
-            value={newProduct.description}
-            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-          />
+          <div>
+            <label htmlFor="product-name" className="block mb-1">
+              Nombre
+            </label>
+            <input
+              id="product-name"
+              type="text"
+              placeholder="Nombre"
+              className="input w-full h-12 p-2" // Aumenta el ancho y alto
+              value={newProduct.name}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="product-quantity" className="block mb-1">
+              Cantidad
+            </label>
+            <input
+              id="product-quantity"
+              type="number"
+              placeholder="Cantidad"
+              className="input w-full h-12 p-2" // Aumenta el ancho y alto
+              value={newProduct.quantity}
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  quantity: Number(e.target.value),
+                })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="product-price" className="block mb-1">
+              Precio
+            </label>
+            <input
+              id="product-price"
+              type="number"
+              placeholder="Precio"
+              className="input w-full h-12 p-2" // Aumenta el ancho y alto
+              value={newProduct.price}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, price: Number(e.target.value) })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="product-description" className="block mb-1">
+              Descripción
+            </label>
+            <input
+              id="product-description"
+              type="text"
+              placeholder="Descripción"
+              className="input w-full h-12 p-2" // Aumenta el ancho y alto
+              value={newProduct.description}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, description: e.target.value })
+              }
+            />
+          </div>
         </div>
+
         <div className="flex justify-end">
           {editProductId ? (
             <>
@@ -196,7 +244,9 @@ const Inventory: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigat
         <h3 className="text-lg font-semibold mb-4">Historial de Actividades</h3>
         <ul>
           {activityLog.map((activity, index) => (
-            <li key={index} className="text-gray-400">{activity}</li>
+            <li key={index} className="text-gray-400">
+              {activity}
+            </li>
           ))}
         </ul>
       </div>
