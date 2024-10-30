@@ -68,6 +68,10 @@ Se configuró **NextAuth** para manejar la autenticación de usuarios, permitien
 ### 6. Pruebas
 Realizamos pruebas unitarias en los componentes clave del frontend y backend. Además, se llevaron a cabo pruebas de integración para asegurarnos de que el flujo de datos entre la interfaz y la base de datos fuera correcto. Cada miembro hizo revisiones cruzadas del código.
 
+> Debido a la complejidad de las pruebas unitarias decidimos hacer un archivo markdown aparte para esta documentación.
+
+[Sigase aqui 📒](https://github.com/EstP19/StockEasy/blob/main/src/PruebasUnitarias/Tester.md)
+
 ### 7. Despliegue
 Finalmente, desplegamos la aplicación en **Vercel**, que facilitó el despliegue continuo con cada cambio hecho en el repositorio de GitHub.
 
