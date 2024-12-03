@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '../supabaseConfig';
 import { Product } from '../types';
@@ -21,7 +20,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
   };
 
   const addProduct = async (newProduct: Omit<Product, 'id'>) => {
-    const { data, error } = await supabase.from('products').insert([newProduct]);
+    const { error } = await supabase.from('products').insert([newProduct]);
     if (error) console.error('Error adding product:', error);
     else loadProducts();  // Recargamos los productos después de añadir
   };

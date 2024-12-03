@@ -1,7 +1,5 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Inventory from './Inventory';
-import { supabase } from '../supabaseConfig'; // Mockear el supabase
 import { toast } from 'react-toastify';
 
 // Mockear el Supabase

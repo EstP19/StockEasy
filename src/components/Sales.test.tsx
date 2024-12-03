@@ -1,7 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Sales from './Sales';
-import { supabase } from '../supabaseConfig';
-import { ToastContainer } from 'react-toastify';
 
 jest.mock('../supabaseConfig', () => ({
     supabase: {
