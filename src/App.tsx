@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
 import Inventory from './components/Inventory';
@@ -13,7 +12,7 @@ function App() {
   useEffect(() => {
     // Verificar si el usuario ya está logueado
     const checkUserSession = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setIsLoggedIn(true); // Si hay un usuario, se considera que está logueado
       }
