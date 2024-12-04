@@ -1,4 +1,5 @@
 module.exports = {
+  preset: 'ts-jest', 
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
@@ -10,5 +11,5 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/(?!(your-esm-package)/)'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
-  }
+  }, 
 };

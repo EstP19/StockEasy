@@ -5,10 +5,10 @@
 4 silly config load:file:C:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\.npmrc
 5 silly config load:file:C:\Users\Janeth\.npmrc
 6 silly config load:file:C:\Users\Janeth\AppData\Roaming\npm\etc\npmrc
-7 verbose title npm exec commitlint --edit .git/COMMIT_EDITMSG
-8 verbose argv "exec" "--" "commitlint" "--edit" ".git/COMMIT_EDITMSG"
-9 verbose logfile logs-max:10 dir:C:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\Janeth\AppData\Data\Roaming\npm-cache\_logs\2024-12-03T20_03_47_101Z-
-10 verbose logfile C:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\Janeth\AppData\Data\Roaming\npm-cache\_logs\2024-12-03T20_03_47_101Z-debug-0.log
+7 verbose title npm exec jest LoginForm
+8 verbose argv "exec" "--" "jest" "LoginForm"
+9 verbose logfile logs-max:10 dir:C:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\Janeth\AppData\Data\Roaming\npm-cache\_logs\2024-12-03T21_25_41_577Z-
+10 verbose logfile C:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\Janeth\AppData\Data\Roaming\npm-cache\_logs\2024-12-03T21_25_41_577Z-debug-0.log
 11 silly logfile start cleaning logs, removing 1 files
 12 silly logfile done cleaning log files
 13 verbose cwd C:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy

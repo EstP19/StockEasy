@@ -1,0 +1,20 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\Janeth\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.3
+2 info using node@v20.17.0
+3 silly config load:file:C:\Users\Janeth\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:c:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\.npmrc
+5 silly config load:file:C:\Users\Janeth\.npmrc
+6 silly config load:file:C:\Users\Janeth\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm view @babel/preset-react description dist-tags.latest homepage version time
+8 verbose argv "view" "--json" "--" "@babel/preset-react" "description" "dist-tags.latest" "homepage" "version" "time"
+9 verbose logfile logs-max:10 dir:c:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\Janeth\AppData\Data\Roaming\npm-cache\_logs\2024-12-04T00_11_20_298Z-
+10 verbose logfile c:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy\Janeth\AppData\Data\Roaming\npm-cache\_logs\2024-12-04T00_11_20_298Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
+13 http fetch GET 200 https://registry.npmjs.org/@babel%2fpreset-react 599ms (cache miss)
+14 verbose cwd c:\Users\Janeth\Desktop\SOFTWARE DEV\SEMESTRE V\PDSEI\StockEasy
+15 verbose os Windows_NT 10.0.19045
+16 verbose node v20.17.0
+17 verbose npm  v10.8.3
+18 verbose exit 0
+19 info ok

@@ -21,7 +21,7 @@ describe('LoginForm', () => {
 
   test('renders LoginForm correctly', () => {
     render(<LoginForm onLoginSuccess={mockOnLoginSuccess} />);
-    expect(screen.getByRole('heading', { name: /stockeasy/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /stock easy/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
@@ -55,7 +55,8 @@ describe('LoginForm', () => {
   test('disables button when loading', () => {
     render(<LoginForm onLoginSuccess={mockOnLoginSuccess} />);
     const button = screen.getByRole('button', { name: /login/i });
-
+    render(<LoginForm onLoginSuccess={mockOnLoginSuccess} isLoading={true} />);
+    expect(screen.getByRole('button', { name: /cargando/i })).toBeDisabled();
     fireEvent.click(button);
     expect(button).toBeDisabled(); // El botón debería estar deshabilitado durante la carga
   });
@@ -113,14 +114,10 @@ describe('LoginForm', () => {
     const button = screen.getByRole('button', { name: /login/i });
     expect(button).toBeDisabled(); // Inicialmente deshabilitado
 
-    fireEvent.change(screen.getByLabelText(/correo electrónico/i), {
-      target: { value: 'test@example.com' },
-    });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: '' } });
     expect(button).toBeDisabled(); // Aún deshabilitado
 
-    fireEvent.change(screen.getByLabelText(/contraseña/i), {
-      target: { value: 'password' },
-    });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: '' } });
     expect(button).toBeEnabled(); // Ahora debería estar habilitado
   });
 

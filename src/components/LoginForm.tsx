@@ -5,6 +5,7 @@ import { supabase } from '../supabaseConfig.ts'; // Importa el cliente de Supaba
 
 interface LoginFormProps {
   onLoginSuccess: () => void; // Cambiamos el prop para indicar éxito en login
+    isLoading?: boolean;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
@@ -84,6 +85,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
           {loading ? 'Cargando...' : 'Login'}
         </button>
       </form>
+      
       <div className="mt-4 text-center">
         <LaughIcon className="inline-block text-accent mr-2" />
         <span className="text-gray-300 text-sm">¡Nos satisface tenerte con nosotros!</span>
